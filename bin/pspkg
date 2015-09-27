@@ -73,12 +73,14 @@ function spinner() {
 
 function init() {
     if [ ! -e $PSPKGDIR ]; then
-        msgn INIT: "setup '$PSPKGDIR' ? [Y/n] "
-        read ANS
-        case `echo $ANS | tr y Y` in
-            ""|Y*) ;;
-            *) msg INIT: "setup canceled"; exit 1 ;;
-        esac
+        if [ $__ask -eq 1 ]; then
+            msgn INIT: "setup '$PSPKGDIR' ? [Y/n] "
+            read ANS
+            case `echo $ANS | tr y Y` in
+                ""|Y*) ;;
+                *) msg INIT: "setup canceled"; exit 1 ;;
+            esac
+        fi
     fi
 
     msg PSPKGDIR: $PSPKGDIR
@@ -307,11 +309,14 @@ __install=""
 __update=0
 __printenv=0
 
+__ask=1
+
 for OPT in "$@"
 do
     case $OPT in
         '--help'    ) usage ;;
         '--version' ) banner ;;
+        '--noask'   ) __ask=0 ;;
         '--prefix'  ) PSPKGDIR=$2; shift || : ;;
         '--search'  ) __search=$2; shift || : ;;
         '--install' ) __install=$2; shift || : ;;
