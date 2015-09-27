@@ -3,7 +3,11 @@ user-based PortSnap + PKG tool for FreeBSD
 
 ## Install
 
+    # bash
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/bellflower2015/pspkg/master/setup.bash)"
+    
+    # csh
+    sh -c 'bash -c "$(curl -fsSL https://raw.githubusercontent.com/bellflower2015/pspkg/master/setup.bash)"'
 
 ## Usage
 
