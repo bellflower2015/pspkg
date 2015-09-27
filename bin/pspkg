@@ -71,6 +71,23 @@ function spinner() {
     fi
 }
 
+function note() {
+    echo "  Make sure you have environment variables set:"
+    echo
+    echo "    # bash"
+    msg  "    export PSPKGDIR=\$HOME/$(basename $PSPKGDIR)"
+    msg  "    export PATH=\$PSPKGDIR/bin:\$PATH"
+    msg  "    export LD_LIBRARY_PATH=\$PSPKGDIR/lib:\$LD_LIBRARY_PATH"
+    echo
+    echo "    # csh"
+    msg  "    setenv PSPKGDIR \$HOME/$(basename $PSPKGDIR)"
+    msg  "    setenv PATH \$PSPKGDIR/bin:\$PATH"
+    msg  "    if ( \${?LD_LIBRARY_PATH} ) \\"
+    msg  "      setenv LD_LIBRARY_PATH \$PSPKGDIR/lib:\$LD_LIBRARY_PATH"
+    msg  "    if ( ! \${?LD_LIBRARY_PATH} ) \\"
+    msg  "      setenv LD_LIBRARY_PATH \$PSPKGDIR/lib"
+}
+
 function init() {
     if [ ! -e $PSPKGDIR ]; then
         if [ $__ask -eq 1 ]; then
@@ -176,10 +193,7 @@ EOD
 
         msg INFO: "SETUP COMPLETED"
         echo
-        echo "  Make sure you have environment variables set:"
-        echo
-        echo "    export PSPKGDIR=$PSPKGDIR"
-        echo "    source $PSPKGCONF"
+        note
         echo
 
         exit 0
@@ -249,19 +263,6 @@ function usage() {
     echo
     echo "Example:"
     echo
-    echo "  Initialize:"
-    echo
-    echo "    # default prefix: \$PSPKGDIR (\$HOME/.pspkg)"
-    msg  "    $PROGNAME"
-    echo
-    echo "      or"
-    echo
-    echo "    # manual setup"
-    msg  "    $PROGNAME --prefix \$HOME/local"
-    echo
-    echo "    # then export PSPKGDIR"
-    msg  "    export PSPKGDIR=\$HOME/local"
-    echo
     echo "  Search (from ports):"
     echo
     msg  "    $PROGNAME --search foo"
@@ -273,10 +274,8 @@ function usage() {
     echo
     echo "Note:"
     echo
-    echo "  Make sure you have environment variables set:"
+    note
     echo
-    msg  "    export PSPKGDIR=\$HOME/.pspkg"
-    msg  "    source \$PSPKGDIR/etc/pspkg.conf"
     exit 1
 }
 
