@@ -172,7 +172,7 @@ EOD
         spinner portsnap -f $PORTSNAPCONF update
 
         [ ! -e $PSPKGDIR/bin ] && mkdir -p $PSPKGDIR/bin
-        cp $0 $PSPKGDIR/bin/ && :
+        cp $0 $PSPKGDIR/bin/pspkg && chmod 755 $PSPKGDIR/bin/pspkg && :
 
         msg INFO: "SETUP COMPLETED"
         echo
