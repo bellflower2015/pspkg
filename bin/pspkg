@@ -12,7 +12,8 @@ set -eu
 PROGNAME=$(basename $0)
 VERSION=1.0.0
 SINCE=2015
-PSPKGDIR=$HOME/.pspkg
+
+PSPKGDIR=${PSPKGDIR:-$HOME/.pspkg}
 
 function _g() { echo "\e[32m"; }
 function _r() { echo "\e[31m"; }
@@ -101,8 +102,6 @@ function init() {
     fi
 
     msg PSPKGDIR: $PSPKGDIR
-
-    PSPKGDIR=${PSPKGDIR:-$HOME/.pspkg}
 
     [ -e $PSPKGDIR/var/log ] || mkdir -p $PSPKGDIR/var/log
     ymdhms=$(date "+%Y%m%d%H%M%S")
