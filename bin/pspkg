@@ -52,7 +52,7 @@ function spinner() {
     local pid=$!
     local delay=0.75
     local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+    while [ "$(ps a | awk '{print $1}' | grep -w $pid)" ]; do
         local temp=${spinstr#?}
         printf "[%c]" "$spinstr"
         local spinstr=$temp${spinstr%"$temp"}
@@ -200,18 +200,24 @@ EOD
     fi
 }
 
+function is_installed() {
+    local all=("$(pkg query %o)")
+    local pkg
+    local found=1
+    for pkg in ${all[@]}; do
+        [ "x$pkg" = "x$1" ] && found=0
+    done
+    echo $found
+}
+
 function _pkginstall() {
     local target=$1
 
-    if [ "$(pkg query %o|grep $target)" ]; then
-        :
-    else
-        local depends=($(make -C $PORTSDIR/$target all-depends-list))
-        for deppkgpath in "${depends[@]}"; do
-            local deppkg=${deppkgpath#$PORTSDIR/}
-            if [ "$(pkg query %o|grep $deppkg)" ]; then
-                :
-            else
+    if [ "x$(is_installed $target)" = "x1" ]; then
+        local depends=("$(make -C $PORTSDIR/$target all-depends-list|sed -e s!$PORTSDIR/!!g)")
+        local deppkg
+        for deppkg in ${depends[@]}; do
+            if [ "x$(is_installed $deppkg)" = "x1" ]; then
                 _pkginstall $deppkg
             fi
         done
