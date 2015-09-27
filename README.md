@@ -1,6 +1,10 @@
 # pspkg
 user-based PortSnap + PKG tool for FreeBSD
 
+## Install
+
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/bellflower2015/pspkg/master/setup.bash)"
+
 ## Usage
 
     pspkg [options]
@@ -17,19 +21,6 @@ user-based PortSnap + PKG tool for FreeBSD
 
 ### Example
 
-#### Initialize
-
-    # default prefix: $PSPKGDIR ($HOME/.pspkg)
-    pspkg
-
-      or
-
-    # manual setup
-    pspkg --prefix $HOME/local
-
-    # then export PSPKGDIR
-    export PSPKGDIR=$HOME/local
-
 #### Search (from ports)
 
     pspkg --search foo
@@ -39,7 +30,7 @@ user-based PortSnap + PKG tool for FreeBSD
     # specify DIR/SUBDIR of $PORTSDIR
     pspkg --install foo/bar
 
-#### Note
+### Note
 Make sure you have environment variables set:
 
     export PSPKGDIR=$HOME/.pspkg
