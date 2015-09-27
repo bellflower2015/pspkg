@@ -206,14 +206,15 @@ function _pkginstall() {
     if [ "$(pkg query %o|grep $target)" ]; then
         :
     else
-        while read deppkgpath; do
+        local depends=($(make -C $PORTSDIR/$target all-depends-list))
+        for deppkgpath in "${depends[@]}"; do
             local deppkg=${deppkgpath#$PORTSDIR/}
             if [ "$(pkg query %o|grep $deppkg)" ]; then
                 :
             else
                 _pkginstall $deppkg
             fi
-        done < <(make -C $PORTSDIR/$target all-depends-list)
+        done
 
         pmsgn MAKE: $target
         spinner make -C $PORTSDIR/$target BATCH=yes package
